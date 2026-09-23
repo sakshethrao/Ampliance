@@ -1,0 +1,887 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ampliance | Battery EPR compliance, handled</title>
+<meta name="description" content="Ampliance makes battery EPR compliance simple for India's battery assemblers, importers and online sellers. Know what you owe, never miss a CPCB deadline, verify certificates before you pay. Launching soon.">
+<meta name="theme-color" content="#0A1411">
+<meta name="color-scheme" content="dark">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ampliance">
+<meta property="og:title" content="Ampliance | Battery EPR compliance that never runs flat">
+<meta property="og:description" content="For India's battery assemblers, importers and online sellers. Meet CPCB targets, buy genuine certificates and file on time, without a consultant. Join the waitlist.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ampliance | Battery EPR compliance that never runs flat">
+<meta name="twitter:description" content="Battery EPR compliance for small businesses in India. Launching soon. Join the waitlist.">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230A1411'/%3E%3Crect x='24' y='9' width='16' height='6' rx='2' fill='%23D4FF3F'/%3E%3Crect x='17' y='14' width='30' height='42' rx='7' fill='none' stroke='%23F1ECE0' stroke-width='3'/%3E%3Crect x='22' y='36' width='20' height='15' rx='3' fill='%23D4FF3F'/%3E%3Crect x='22' y='27' width='20' height='6' rx='2' fill='%23D4FF3F' opacity='.55'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #0A1411;
+    --bg-2: #0D1A16;
+    --surface: rgba(241, 236, 224, 0.035);
+    --ink: #F1ECE0;
+    --ink-2: #C4C0B3;
+    --ink-3: #8F9A92;
+    --line: rgba(241, 236, 224, 0.08);
+    --line-2: rgba(241, 236, 224, 0.16);
+    --volt: #D4FF3F;
+    --volt-ink: #0A1411;
+    --volt-soft: rgba(212, 255, 63, 0.12);
+    --volt-glow: rgba(212, 255, 63, 0.45);
+    --danger: #FF9D7A;
+
+    --serif: "Instrument Serif", "Times New Roman", serif;
+    --sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "Geist Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+
+    --gutter: clamp(16px, 4.5vw, 72px);
+    --ease: cubic-bezier(.2, .7, .2, 1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  /* ---------- Background: mesh, grid, grain ---------- */
+  .bg-wrap { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+  .bg { position: absolute; inset: 0; }
+  .bg-mesh {
+    background:
+      radial-gradient(38% 46% at 76% 42%, rgba(212, 255, 63, 0.09), transparent 70%),
+      radial-gradient(55% 60% at 4% 104%, rgba(24, 96, 76, 0.42), transparent 70%),
+      radial-gradient(30% 36% at 100% 0%, rgba(226, 172, 92, 0.07), transparent 70%),
+      radial-gradient(60% 50% at 40% -10%, rgba(18, 60, 50, 0.5), transparent 70%);
+    animation: drift 24s ease-in-out infinite alternate;
+  }
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, var(--line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+    background-size: 72px 72px;
+    background-position: -1px -1px;
+    -webkit-mask-image: radial-gradient(ellipse 70% 70% at 68% 40%, #000 10%, transparent 78%);
+            mask-image: radial-gradient(ellipse 70% 70% at 68% 40%, #000 10%, transparent 78%);
+    opacity: .7;
+  }
+  .bg-grain {
+    opacity: .06;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  @keyframes drift {
+    from { transform: translate3d(0, 0, 0) scale(1); }
+    to   { transform: translate3d(-2%, 1.5%, 0) scale(1.04); }
+  }
+
+  /* ---------- Layout ---------- */
+  .page {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    min-height: 100svh;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+  }
+
+  .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: clamp(20px, 2.6vw, 30px) 0;
+  }
+  .brand {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 23px;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    text-decoration: none;
+    border-radius: 6px;
+  }
+  .brand .amp { color: var(--volt); }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 14px 7px 12px;
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    background: rgba(10, 20, 17, 0.6);
+    -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    white-space: nowrap;
+  }
+  .badge .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--volt);
+    box-shadow: 0 0 0 0 var(--volt-glow);
+    animation: ping 2.4s var(--ease) infinite;
+  }
+  @keyframes ping {
+    0%   { box-shadow: 0 0 0 0 rgba(212, 255, 63, .55); }
+    70%  { box-shadow: 0 0 0 8px rgba(212, 255, 63, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(212, 255, 63, 0); }
+  }
+
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr);
+    align-items: center;
+    gap: clamp(32px, 5vw, 96px);
+    padding: clamp(8px, 2vh, 32px) 0 clamp(16px, 2vh, 32px);
+  }
+
+  /* ---------- Copy ---------- */
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 clamp(20px, 3vh, 28px);
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .eyebrow::before {
+    content: "";
+    width: 28px; height: 1px;
+    background: var(--volt);
+  }
+
+  h1 {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(3rem, 1.1rem + 5.1vw, 6.1rem);
+    line-height: .96;
+    letter-spacing: -0.022em;
+    color: var(--ink);
+  }
+  h1 .line { display: block; }
+  h1 em {
+    font-style: italic;
+    color: var(--volt);
+    padding-right: .06em;
+    text-shadow: 0 0 42px rgba(212, 255, 63, .28);
+  }
+
+  .sub {
+    max-width: 34rem;
+    margin: clamp(20px, 3vh, 28px) 0 0;
+    font-size: clamp(16px, 1.05rem + .15vw, 18.5px);
+    line-height: 1.55;
+    font-weight: 350;
+    color: var(--ink-2);
+  }
+
+  .points {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: clamp(24px, 3.6vh, 36px) 0 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+    max-width: 40rem;
+  }
+  .points li {
+    padding: 16px 20px 0 0;
+    font-size: 14.5px;
+    line-height: 1.4;
+    color: var(--ink);
+    text-wrap: balance;
+  }
+  .points li + li { padding-left: 20px; border-left: 1px solid var(--line); }
+  .points .n {
+    display: block;
+    margin-bottom: 6px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .06em;
+    color: var(--volt);
+  }
+
+  /* ---------- Waitlist ---------- */
+  .waitlist-wrap {
+    margin-top: clamp(28px, 4vh, 44px);
+    max-width: 34rem;
+    position: relative;
+  }
+  .label {
+    display: block;
+    margin-bottom: 12px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .field {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px;
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    background: linear-gradient(180deg, rgba(241, 236, 224, .05), rgba(241, 236, 224, .015));
+    -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+    box-shadow: inset 0 1px 0 rgba(241, 236, 224, .06), 0 20px 60px -30px rgba(0, 0, 0, .8);
+    transition: border-color .25s var(--ease), box-shadow .25s var(--ease);
+  }
+  .field:focus-within {
+    border-color: rgba(212, 255, 63, .55);
+    box-shadow: inset 0 1px 0 rgba(241, 236, 224, .06), 0 0 0 4px rgba(212, 255, 63, .08), 0 20px 60px -30px rgba(0, 0, 0, .8);
+  }
+  .field.invalid { border-color: rgba(255, 157, 122, .7); }
+
+  .field input[type="email"] {
+    flex: 1;
+    min-width: 0;
+    height: 48px;
+    padding: 0 8px 0 20px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ink);
+    font: 400 16px/1 var(--sans);
+    letter-spacing: -0.005em;
+  }
+  .field input::placeholder { color: var(--ink-3); opacity: 1; }
+  .field input:focus { outline: none; }
+  .field input:focus-visible { outline: none; }
+
+  .hp { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; opacity: 0; }
+
+  .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 48px;
+    padding: 0 22px 0 24px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--volt);
+    color: var(--volt-ink);
+    font: 550 15px/1 var(--sans);
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    cursor: pointer;
+    overflow: hidden;
+    isolation: isolate;
+    box-shadow: 0 0 0 0 rgba(212, 255, 63, 0), inset 0 1px 0 rgba(255, 255, 255, .45);
+    transition: box-shadow .35s var(--ease), transform .35s var(--ease), background-color .35s var(--ease);
+  }
+  .btn::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, .55) 50%, transparent 70%);
+    transform: translateX(-120%);
+    transition: transform .8s var(--ease);
+  }
+  .btn:hover {
+    box-shadow: 0 0 0 1px rgba(212, 255, 63, .6), 0 10px 40px -6px rgba(212, 255, 63, .55), inset 0 1px 0 rgba(255, 255, 255, .45);
+  }
+  .btn:hover::after { transform: translateX(120%); }
+  .btn:active { transform: scale(.98); }
+  .btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+  .btn svg { width: 16px; height: 16px; transition: transform .35s var(--ease); }
+  .btn:hover svg { transform: translateX(3px); }
+  .btn[disabled] { cursor: progress; }
+  .btn .spinner {
+    display: none;
+    width: 14px; height: 14px;
+    border: 2px solid rgba(10, 20, 17, .25);
+    border-top-color: var(--volt-ink);
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
+  }
+  .btn.loading .spinner { display: block; }
+  .btn.loading svg { display: none; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .msg {
+    min-height: 20px;
+    margin: 12px 0 0 20px;
+    font-size: 13px;
+    color: var(--ink-3);
+  }
+  .msg.error { color: var(--danger); }
+
+  /* Success state */
+  .success {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 24px 12px 12px;
+    border: 1px solid rgba(212, 255, 63, .4);
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(212, 255, 63, .12), rgba(212, 255, 63, .03));
+    box-shadow: 0 0 60px -20px rgba(212, 255, 63, .35);
+  }
+  .success[hidden] { display: none; }
+  .success.show { animation: pop .6s var(--ease) both; }
+  .success-icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: var(--volt);
+    box-shadow: 0 0 24px rgba(212, 255, 63, .5);
+  }
+  .success-icon svg { width: 22px; height: 22px; }
+  .success-icon path {
+    fill: none;
+    stroke: var(--volt-ink);
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 24;
+    stroke-dashoffset: 24;
+  }
+  .success.show .success-icon path { animation: draw .5s .25s var(--ease) forwards; }
+  .success-title {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: 26px;
+    line-height: 1.1;
+    color: var(--ink);
+    outline: none;
+  }
+  .success-title em { font-style: italic; color: var(--volt); }
+  .success-sub { margin: 3px 0 0; font-size: 13.5px; color: var(--ink-2); line-height: 1.4; }
+  .success-sub b { font-weight: 500; color: var(--ink); overflow-wrap: anywhere; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @keyframes pop {
+    from { opacity: 0; transform: translateY(8px) scale(.98); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* ---------- Visual ---------- */
+  .visual {
+    position: relative;
+    width: 100%;
+    max-width: 540px;
+    justify-self: end;
+    aspect-ratio: 520 / 560;
+    max-height: min(72vh, 640px);
+    margin-left: auto;
+  }
+  .visual svg.rig { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+
+  .fig {
+    position: absolute;
+    top: 0; left: 0;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .fig b { color: var(--ink-2); font-weight: 500; }
+
+  .trace { fill: none; stroke: var(--line-2); stroke-width: 1; transition: stroke .6s var(--ease); }
+  .trace.faint { stroke: var(--line); }
+  .trace.hot { stroke: rgba(212, 255, 63, .55); }
+  .node { fill: var(--bg); stroke: var(--line-2); stroke-width: 1; transition: stroke .6s var(--ease), fill .6s var(--ease); }
+  .node.hot { stroke: var(--volt); fill: var(--volt); }
+  .tick { fill: none; stroke: var(--ink-3); stroke-width: 1; opacity: .6; }
+  .shell { fill: rgba(241, 236, 224, .02); stroke: rgba(241, 236, 224, .38); stroke-width: 1.25; }
+  .cap { fill: rgba(241, 236, 224, .06); stroke: rgba(241, 236, 224, .38); stroke-width: 1.25; transition: fill .6s var(--ease), stroke .6s var(--ease); }
+  .full .cap { fill: var(--volt); stroke: var(--volt); }
+  .cell { fill: rgba(241, 236, 224, .035); stroke: rgba(241, 236, 224, .07); stroke-width: 1; transition: fill .35s var(--ease), stroke .35s var(--ease); }
+  .cell.on { fill: url(#cellfill); stroke: rgba(212, 255, 63, .9); }
+  .cell-glow { fill: var(--volt); opacity: 0; transition: opacity .35s var(--ease); }
+  .cell-glow.on { opacity: .38; }
+  .full .glow-group { animation: breathe 3.6s ease-in-out infinite; }
+  @keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
+  .pulse { fill: var(--volt); }
+
+  .tag {
+    position: absolute;
+    top: var(--y);
+    transform: translateY(-50%);
+    display: grid;
+    gap: 3px;
+    padding: 9px 12px 9px 11px;
+    min-width: 0;
+    border: 1px solid var(--line-2);
+    border-radius: 10px;
+    background: rgba(13, 26, 22, .88);
+    -webkit-backdrop-filter: blur(6px);
+            backdrop-filter: blur(6px);
+    transition: border-color .6s var(--ease), box-shadow .6s var(--ease);
+  }
+  .tag.left { left: 0; }
+  .tag.right { right: 0; }
+  .tag-k {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    white-space: nowrap;
+  }
+  .tag-v {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    font-weight: 450;
+    color: var(--ink-2);
+    white-space: nowrap;
+  }
+  .led {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--ink-3);
+    opacity: .6;
+    transition: background .4s var(--ease), box-shadow .4s var(--ease), opacity .4s;
+  }
+  .tag.on { border-color: rgba(212, 255, 63, .35); box-shadow: 0 0 30px -12px rgba(212, 255, 63, .5); }
+  .tag.on .tag-v { color: var(--ink); }
+  .tag.on .led { background: var(--volt); opacity: 1; box-shadow: 0 0 10px var(--volt); }
+
+  .readout {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    white-space: nowrap;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .readout b {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 30px;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+    min-width: 2.6em;
+  }
+
+  /* ---------- Footer ---------- */
+  .foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 0 clamp(18px, 2vw, 24px);
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  /* ---------- Focus ---------- */
+  a:focus-visible { outline: 2px solid var(--volt); outline-offset: 4px; }
+
+  /* ---------- Load-in ---------- */
+  .reveal { opacity: 0; transform: translateY(14px); animation: rise 1s var(--ease) forwards; animation-delay: var(--d, 0s); }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 1080px) {
+    .hero { grid-template-columns: minmax(0, 1fr) minmax(0, .85fr); gap: 40px; }
+  }
+  @media (max-width: 900px) {
+    .hero {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 56px;
+      padding-top: clamp(24px, 6vw, 48px);
+    }
+    .visual { justify-self: center; margin: 0 auto; max-width: 460px; max-height: none; }
+    h1 { font-size: clamp(3rem, 1rem + 7vw, 5.4rem); }
+  }
+  @media (max-width: 560px) {
+    .points { grid-template-columns: minmax(0, 1fr); border-top: 0; }
+    .points li,
+    .points li + li {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      padding: 13px 0;
+      border-left: 0;
+      border-top: 1px solid var(--line);
+    }
+    .points .n { margin: 0; }
+    .points li:last-child { border-bottom: 1px solid var(--line); }
+
+    .field {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+      padding: 0;
+      border: 0;
+      background: none;
+      box-shadow: none;
+      -webkit-backdrop-filter: none;
+              backdrop-filter: none;
+    }
+    .field:focus-within { box-shadow: none; }
+    .field input[type="email"] {
+      flex: none;
+      height: 56px;
+      padding: 0 22px;
+      border: 1px solid var(--line-2);
+      background: rgba(241, 236, 224, .04);
+      transition: border-color .25s var(--ease), box-shadow .25s var(--ease);
+    }
+    .field input[type="email"]:focus { border-color: rgba(212, 255, 63, .6); box-shadow: 0 0 0 4px rgba(212, 255, 63, .08); }
+    .field.invalid input[type="email"] { border-color: rgba(255, 157, 122, .7); }
+    .btn { height: 56px; width: 100%; font-size: 16px; }
+    .msg { margin-left: 4px; }
+
+    .success { border-radius: 24px; padding: 14px 18px 14px 14px; align-items: flex-start; }
+    .success-icon { width: 40px; height: 40px; }
+    .success-title { font-size: 23px; }
+
+    .tag { padding: 7px 9px; border-radius: 8px; }
+    .tag-k { font-size: 9.5px; letter-spacing: .1em; }
+    .tn { display: none; }
+    .tag-v { font-size: 12px; gap: 6px; }
+    .readout b { font-size: 26px; }
+    .foot { justify-content: center; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .reveal { opacity: 1; transform: none; }
+    .success-icon path { stroke-dashoffset: 0; }
+    .pulse { display: none; }
+  }
+</style>
+</head>
+<body>
+  <div class="bg-wrap" aria-hidden="true">
+    <div class="bg bg-mesh"></div>
+    <div class="bg bg-grid"></div>
+    <div class="bg bg-grain"></div>
+  </div>
+
+  <div class="page">
+    <header class="top reveal" style="--d:.05s">
+      <a class="brand" href="./" aria-label="Ampliance, home"><span class="amp">Amp</span>liance</a>
+      <span class="badge"><span class="dot" aria-hidden="true"></span>Launching soon</span>
+    </header>
+
+    <main class="hero">
+      <div class="copy">
+        <p class="eyebrow reveal" style="--d:.15s">Battery EPR &middot; CPCB &middot; BWM Rules 2022</p>
+
+        <h1 class="reveal" style="--d:.25s">
+          <span class="line">Battery EPR</span>
+          <span class="line">compliance that</span>
+          <span class="line">never runs <em>flat.</em></span>
+        </h1>
+
+        <p class="sub reveal" style="--d:.4s">For battery assemblers, importers and online sellers in India. Meet your CPCB targets, buy genuine certificates and file on time, without a consultant.</p>
+
+        <ul class="points reveal" style="--d:.52s" aria-label="What Ampliance does">
+          <li><span class="n" aria-hidden="true">01</span>Know exactly what you owe</li>
+          <li><span class="n" aria-hidden="true">02</span>Never miss a CPCB deadline</li>
+          <li><span class="n" aria-hidden="true">03</span>Verify certificates before you pay</li>
+        </ul>
+
+        <div class="waitlist-wrap reveal" style="--d:.64s">
+          <!--
+            WAITLIST ENDPOINT: replace FORMSPREE_ENDPOINT below with your Formspree URL,
+            e.g. action="https://formspree.io/f/abcdwxyz"
+          -->
+          <form id="waitlist" action="FORMSPREE_ENDPOINT" method="POST" novalidate>
+            <label class="label" for="email">Join the early-access list</label>
+            <div class="field" id="field">
+              <input id="email" name="email" type="email" inputmode="email" autocomplete="email" spellcheck="false"
+                     placeholder="you@company.in" required aria-describedby="form-msg">
+              <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+              <button class="btn" id="submit" type="submit">
+                <span class="btn-label">Join the waitlist</span>
+                <span class="spinner" aria-hidden="true"></span>
+                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9.5M8.5 3.5 13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+            <p class="msg" id="form-msg" aria-live="polite">No spam. Just one email when we launch.</p>
+          </form>
+
+          <div class="success" id="success" hidden>
+            <span class="success-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5.5 12.5l4 4L18.5 7.5"/></svg></span>
+            <div>
+              <p class="success-title" tabindex="-1">You&rsquo;re on the <em>list.</em></p>
+              <p class="success-sub">We&rsquo;ll email <b id="success-email"></b> at launch.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="visual reveal" style="--d:.45s" aria-hidden="true">
+        <svg class="rig" id="rig" viewBox="0 0 520 560" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="10"/>
+            </filter>
+            <filter id="pglow" x="-300%" y="-300%" width="700%" height="700%">
+              <feGaussianBlur stdDeviation="2.4" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <linearGradient id="cellfill" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0" stop-color="#B9E52A"/>
+              <stop offset=".45" stop-color="#E2FF66"/>
+              <stop offset="1" stop-color="#C2EC30"/>
+            </linearGradient>
+            <linearGradient id="sheen" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0" stop-color="#F1ECE0" stop-opacity=".10"/>
+              <stop offset=".35" stop-color="#F1ECE0" stop-opacity="0"/>
+              <stop offset="1" stop-color="#F1ECE0" stop-opacity=".03"/>
+            </linearGradient>
+          </defs>
+
+          <!-- faint background circuitry -->
+          <path class="trace faint" d="M270 48 V24 H400 L424 0"/>
+          <path class="trace faint" d="M270 470 V500"/>
+          <path class="trace faint" d="M344 420 H420 L448 448 V560"/>
+          <path class="trace faint" d="M196 110 H150 L120 80 H40"/>
+          <circle class="node" cx="400" cy="24" r="2.5"/>
+          <circle class="node" cx="420" cy="420" r="2.5"/>
+          <circle class="node" cx="120" cy="80" r="2.5"/>
+
+          <!-- signal traces into the battery -->
+          <path class="trace" id="t1" d="M0 160 H164 L196 192"/>
+          <path class="trace" id="t2" d="M520 280 H376 L344 248"/>
+          <path class="trace" id="t3" d="M0 400 H164 L196 368"/>
+          <circle class="node" id="n1" cx="196" cy="192" r="3"/>
+          <circle class="node" id="n2" cx="344" cy="248" r="3"/>
+          <circle class="node" id="n3" cx="196" cy="368" r="3"/>
+
+          <!-- spec-drawing corner ticks -->
+          <path class="tick" d="M168 44 V32 H180 M372 44 V32 H360 M168 486 V498 H180 M372 486 V498 H360"/>
+
+          <!-- battery -->
+          <rect class="cap" x="238" y="48" width="64" height="22" rx="6"/>
+          <rect class="shell" x="196" y="70" width="148" height="400" rx="28"/>
+          <g class="glow-group" filter="url(#glow)" id="glows"></g>
+          <g id="cells"></g>
+          <rect x="196" y="70" width="148" height="400" rx="28" fill="url(#sheen)" pointer-events="none"/>
+
+          <!-- signal pulses -->
+          <g filter="url(#pglow)">
+            <circle class="pulse" r="2.6"><animateMotion dur="3.4s" repeatCount="indefinite" begin="0s"><mpath href="#t1"/></animateMotion></circle>
+            <circle class="pulse" r="2.6"><animateMotion dur="3.4s" repeatCount="indefinite" begin="1.1s"><mpath href="#t2"/></animateMotion></circle>
+            <circle class="pulse" r="2.6"><animateMotion dur="3.4s" repeatCount="indefinite" begin="2.2s"><mpath href="#t3"/></animateMotion></circle>
+          </g>
+        </svg>
+
+        <div class="fig"><b>Fig. 01</b> &nbsp;EPR status</div>
+
+        <div class="tag left" style="--y:28.57%" data-trace="1" data-cells="4" data-done="Calculated">
+          <span class="tag-k"><span class="tn">01 &middot; </span>Targets</span>
+          <span class="tag-v"><i class="led"></i><span>Pending</span></span>
+        </div>
+        <div class="tag right" style="--y:50%" data-trace="2" data-cells="8" data-done="Verified">
+          <span class="tag-k"><span class="tn">02 &middot; </span>Certificates</span>
+          <span class="tag-v"><i class="led"></i><span>Pending</span></span>
+        </div>
+        <div class="tag left" style="--y:71.43%" data-trace="3" data-cells="12" data-done="Filed on time">
+          <span class="tag-k"><span class="tn">03 &middot; </span>Returns</span>
+          <span class="tag-v"><i class="led"></i><span>Pending</span></span>
+        </div>
+
+        <div class="readout">Compliance charge <b id="pct">0%</b></div>
+      </div>
+    </main>
+
+    <footer class="foot">
+      <span>&copy; 2026 Ampliance &middot; Made in India</span>
+    </footer>
+  </div>
+
+<script>
+(function () {
+  "use strict";
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- Charging battery ---------- */
+  var SVGNS = "http://www.w3.org/2000/svg";
+  var rig = document.getElementById("rig");
+  var cellsG = document.getElementById("cells");
+  var glowsG = document.getElementById("glows");
+  var COUNT = 12, X = 210, W = 120, TOP = 84, BOTTOM = 456, GAP = 5;
+  var H = (BOTTOM - TOP - GAP * (COUNT - 1)) / COUNT;
+  var cells = [], glows = [];
+
+  for (var i = 0; i < COUNT; i++) {
+    var y = BOTTOM - (i + 1) * H - i * GAP;
+    var r = i === 0 || i === COUNT - 1 ? 10 : 4;
+    var c = document.createElementNS(SVGNS, "rect");
+    c.setAttribute("class", "cell");
+    c.setAttribute("x", X); c.setAttribute("y", y.toFixed(2));
+    c.setAttribute("width", W); c.setAttribute("height", H.toFixed(2));
+    c.setAttribute("rx", r);
+    cellsG.appendChild(c); cells.push(c);
+    var g = c.cloneNode();
+    g.setAttribute("class", "cell-glow");
+    glowsG.appendChild(g); glows.push(g);
+  }
+
+  var tags = Array.prototype.slice.call(document.querySelectorAll(".tag"));
+  var pct = document.getElementById("pct");
+
+  function setLevel(p) {
+    var lit = Math.floor(p * COUNT + 0.0001);
+    for (var i = 0; i < COUNT; i++) {
+      var on = i < lit;
+      cells[i].classList.toggle("on", on);
+      glows[i].classList.toggle("on", on);
+    }
+    pct.textContent = Math.round(p * 100) + "%";
+    tags.forEach(function (t) {
+      var on = lit >= +t.dataset.cells;
+      if (on === t.classList.contains("on")) return;
+      t.classList.toggle("on", on);
+      t.querySelector(".tag-v > span").textContent = on ? t.dataset.done : "Pending";
+      var n = t.dataset.trace;
+      document.getElementById("t" + n).classList.toggle("hot", on);
+      document.getElementById("n" + n).classList.toggle("hot", on);
+    });
+    rig.classList.toggle("full", p >= 1);
+  }
+
+  if (reduceMotion) {
+    setLevel(1);
+    if (rig.pauseAnimations) rig.pauseAnimations();
+  } else {
+    setLevel(0);
+    var DURATION = 3600, DELAY = 900, start = null;
+    var ease = function (t) { return 1 - Math.pow(1 - t, 3); };
+    setTimeout(function () {
+      requestAnimationFrame(function step(ts) {
+        if (start === null) start = ts;
+        var t = Math.min(1, (ts - start) / DURATION);
+        setLevel(ease(t));
+        if (t < 1) requestAnimationFrame(step);
+      });
+    }, DELAY);
+  }
+
+  /* ---------- Waitlist form (Formspree) ---------- */
+  var form = document.getElementById("waitlist");
+  var input = document.getElementById("email");
+  var field = document.getElementById("field");
+  var btn = document.getElementById("submit");
+  var btnLabel = btn.querySelector(".btn-label");
+  var msg = document.getElementById("form-msg");
+  var success = document.getElementById("success");
+  var defaultMsg = msg.textContent;
+  var EMAIL_RE = /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)*\.[A-Za-z]{2,}$/;
+
+  var endpoint = form.getAttribute("action") || "";
+  var configured = /^https:\/\/formspree\.io\/f\/[A-Za-z0-9]+/.test(endpoint);
+  var isLocal = location.protocol === "file:" || /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+
+  function showError(text) {
+    msg.textContent = text;
+    msg.classList.add("error");
+    field.classList.add("invalid");
+    input.setAttribute("aria-invalid", "true");
+  }
+  function clearError() {
+    msg.textContent = defaultMsg;
+    msg.classList.remove("error");
+    field.classList.remove("invalid");
+    input.removeAttribute("aria-invalid");
+  }
+  function setLoading(on) {
+    btn.disabled = on;
+    btn.classList.toggle("loading", on);
+    btnLabel.textContent = on ? "Joining…" : "Join the waitlist";
+  }
+  function showSuccess(email) {
+    document.getElementById("success-email").textContent = email;
+    form.hidden = true;
+    success.hidden = false;
+    success.classList.add("show");
+    success.querySelector(".success-title").focus({ preventScroll: true });
+  }
+
+  input.addEventListener("input", function () {
+    if (field.classList.contains("invalid") && EMAIL_RE.test(input.value.trim())) clearError();
+  });
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var email = input.value.trim();
+    if (!email) { showError("Please enter your email address."); input.focus(); return; }
+    if (!EMAIL_RE.test(email)) { showError("Enter a valid email, like name@company.in"); input.focus(); return; }
+    clearError();
+
+    if (!configured) {
+      if (isLocal) {
+        // Local preview only: simulate a successful signup.
+        console.warn("Ampliance: Formspree endpoint not set. Replace FORMSPREE_ENDPOINT in the form's action attribute.");
+        setLoading(true);
+        setTimeout(function () { setLoading(false); showSuccess(email); }, 700);
+      } else {
+        showError("The waitlist isn’t connected yet. Please check back shortly.");
+      }
+      return;
+    }
+
+    setLoading(true);
+    fetch(endpoint, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } })
+      .then(function (res) {
+        if (res.ok) { showSuccess(email); return; }
+        return res.json().then(function (data) {
+          var err = data && data.errors && data.errors[0] && data.errors[0].message;
+          throw new Error(err || "Request failed");
+        });
+      })
+      .catch(function () {
+        showError("Something went wrong. Please try again in a moment.");
+      })
+      .then(function () { setLoading(false); });
+  });
+})();
+</script>
+</body>
+</html>
