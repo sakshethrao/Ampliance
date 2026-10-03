@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ampliance screens</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0A1411;--bg-2:#0D1A16;--panel:rgba(241,236,224,.03);--panel-2:rgba(241,236,224,.055);
+  --ink:#F1ECE0;--ink-2:#C4C0B3;--ink-3:#8F9A92;--line:rgba(241,236,224,.08);--line-2:rgba(241,236,224,.14);
+  --volt:#D4FF3F;--volt-ink:#0A1411;--volt-soft:rgba(212,255,63,.1);--amber:#F2B95C;--amber-soft:rgba(242,185,92,.12);
+  --red:#FF8E73;--red-soft:rgba(255,142,115,.1);
+  --serif:"Instrument Serif",serif;--sans:"Geist",system-ui,sans-serif;--mono:"Geist Mono",monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#050a08;font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased}
+.screen{width:1440px;height:900px;margin:0 0 40px;position:relative;overflow:hidden;background:var(--bg);display:grid;grid-template-columns:232px 1fr}
+.screen::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(40% 50% at 85% 0%,rgba(212,255,63,.05),transparent 70%),radial-gradient(50% 60% at 0% 100%,rgba(24,96,76,.25),transparent 70%)}
+.screen>*{position:relative}
+/* sidebar */
+.side{border-right:1px solid var(--line);padding:26px 16px;display:flex;flex-direction:column;background:rgba(10,20,17,.6)}
+.brand{font-weight:600;font-size:21px;letter-spacing:-.035em;padding:0 10px 28px}
+.brand span{color:var(--volt)}
+.nav{display:grid;gap:2px}
+.nav a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;color:var(--ink-3);font-size:14px;text-decoration:none}
+.nav a svg{width:17px;height:17px;flex:none}
+.nav a.on{background:var(--panel-2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+.nav a.on svg{color:var(--volt)}
+.nav .count{margin-left:auto;font-family:var(--mono);font-size:10.5px;padding:2px 7px;border-radius:99px;background:var(--amber-soft);color:var(--amber)}
+.side .org{margin-top:auto;display:flex;align-items:center;gap:10px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+.av{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;background:#16302A;color:var(--volt);font-family:var(--mono);font-size:12px;flex:none}
+.org b{display:block;font-size:13px;font-weight:500}
+.org small{font-size:11.5px;color:var(--ink-3)}
+/* main */
+.main{display:flex;flex-direction:column;min-width:0}
+.top{height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 36px;border-bottom:1px solid var(--line)}
+.crumb{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.top-r{display:flex;align-items:center;gap:12px}
+.search{width:260px;height:38px;border:1px solid var(--line-2);border-radius:99px;display:flex;align-items:center;gap:10px;padding:0 14px;color:var(--ink-3);font-size:13px}
+.search svg,.iconbtn svg{width:15px;height:15px}
+.iconbtn{width:38px;height:38px;border-radius:50%;border:1px solid var(--line-2);display:grid;place-items:center;color:var(--ink-2);position:relative}
+.iconbtn i{position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--volt)}
+.content{padding:30px 36px;flex:1;min-height:0}
+h1{margin:0;font-family:var(--serif);font-weight:400;font-size:44px;line-height:1;letter-spacing:-.02em}
+h1 em{color:var(--volt)}
+.lead{margin:10px 0 0;color:var(--ink-2);font-size:15px}
+.head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:26px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px}
+.lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3)}
+.big{font-family:var(--serif);font-size:44px;line-height:1;letter-spacing:-.02em;margin-top:12px}
+.big small{font-family:var(--sans);font-size:15px;color:var(--ink-3);letter-spacing:0;margin-left:4px}
+.btn{display:inline-flex;align-items:center;gap:9px;height:42px;padding:0 20px;border-radius:99px;font-size:14px;font-weight:550;border:0;white-space:nowrap}
+.btn svg{width:15px;height:15px}
+.btn.p{background:var(--volt);color:var(--volt-ink);box-shadow:0 8px 30px -10px rgba(212,255,63,.5)}
+.btn.g{background:transparent;color:var(--ink);border:1px solid var(--line-2)}
+.pill{display:inline-flex;align-items:center;gap:7px;height:24px;padding:0 10px;border-radius:99px;font-size:12px;font-weight:500;white-space:nowrap}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.ok{background:var(--volt-soft);color:var(--volt)}
+.warn{background:var(--amber-soft);color:var(--amber)}
+.bad{background:var(--red-soft);color:var(--red)}
+.mut{background:var(--panel-2);color:var(--ink-2)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{font-family:var(--mono);font-weight:400;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);text-align:left;padding:0 14px 12px;border-bottom:1px solid var(--line)}
+td{padding:14px;border-bottom:1px solid var(--line);color:var(--ink-2)}
+td b{color:var(--ink);font-weight:500}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+.bar{height:8px;border-radius:99px;background:var(--panel-2);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#B9E52A,#E2FF66)}
+.bar i.a{background:var(--amber)}
+.check{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;flex:none;background:var(--volt);color:var(--volt-ink)}
+.check svg{width:12px;height:12px}
+.check.x{background:var(--red);}
+.row{display:flex;align-items:center;gap:12px}
+.field{display:grid;gap:8px}
+.field label{font-size:13px;color:var(--ink-2)}
+.input{height:46px;border:1px solid var(--line-2);border-radius:12px;background:rgba(241,236,224,.03);display:flex;align-items:center;padding:0 16px;font-size:14.5px;color:var(--ink)}
+.input.ph{color:var(--ink-3)}
+.input.focus{border-color:rgba(212,255,63,.6);box-shadow:0 0 0 4px rgba(212,255,63,.08)}
+.chip{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;border-radius:99px;border:1px solid var(--line-2);font-size:13.5px;color:var(--ink-2)}
+.chip.on{border-color:rgba(212,255,63,.6);background:var(--volt-soft);color:var(--ink)}
+.chip.on::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--volt);box-shadow:0 0 8px var(--volt)}
+.note{font-size:12.5px;color:var(--ink-3)}
+.toggle{width:36px;height:20px;border-radius:99px;background:var(--panel-2);border:1px solid var(--line-2);position:relative;flex:none}
+.toggle::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--ink-3)}
+.toggle.on{background:var(--volt);border-color:var(--volt)}
+.toggle.on::after{left:18px;background:var(--volt-ink)}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="i-dash" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="6" height="8" rx="1.5"/><rect x="11" y="3" width="6" height="5" rx="1.5"/><rect x="11" y="10" width="6" height="7" rx="1.5"/><rect x="3" y="13" width="6" height="4" rx="1.5"/></symbol>
+    <symbol id="i-calc" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="2.5" width="8" height="15" rx="2.5"/><path d="M8.5 1.5h3"/><path d="M8 13h4M8 10h4"/></symbol>
+    <symbol id="i-cert" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2.5l6 2.5v4.5c0 4-2.7 6.6-6 8-3.3-1.4-6-4-6-8V5z"/><path d="M7.3 10l2 2 3.6-3.8"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="14" height="13" rx="2.5"/><path d="M3 8h14M7 2.5v3M13 2.5v3"/></symbol>
+    <symbol id="i-file" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 2.5h6.5L15 6v11.5H5z"/><path d="M11 2.5V6.5h4M7.5 10.5h5M7.5 13.5h5"/></symbol>
+    <symbol id="i-box" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6.5l7-3.5 7 3.5v7l-7 3.5-7-3.5z"/><path d="M3 6.5l7 3.5 7-3.5M10 10v7"/></symbol>
+    <symbol id="i-search" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="9" r="5.5"/><path d="M13 13l4 4"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 14V9a5 5 0 0110 0v5l1.5 1.5h-13z"/><path d="M8.5 17.5h3"/></symbol>
+    <symbol id="i-tick" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.2l2.3 2.3 4.7-5"/></symbol>
+    <symbol id="i-x" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3.5 3.5l5 5M8.5 3.5l-5 5"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h9.5M8.5 3.5L13 8l-4.5 4.5"/></symbol>
+    <symbol id="i-up" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13V3.5M6 7l4-4 4 4"/><path d="M3.5 13v3.5h13V13"/></symbol>
+    <symbol id="i-dl" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3.5V13M6 9l4 4 4-4"/><path d="M3.5 13v3.5h13V13"/></symbol>
+    <symbol id="i-wa" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 16.5l1-3.3A7 7 0 1117 10a7 7 0 01-10.3 6.2z"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="4.5" width="15" height="11" rx="2"/><path d="M3 5.5l7 5.5 7-5.5"/></symbol>
+  </defs>
+</svg>
+
+<template id="side">
+  <aside class="side">
+    <div class="brand"><span>Amp</span>liance</div>
+    <nav class="nav">
+      <a data-k="dash"><svg><use href="#i-dash"/></svg>Dashboard</a>
+      <a data-k="calc"><svg><use href="#i-calc"/></svg>Obligations</a>
+      <a data-k="cert"><svg><use href="#i-cert"/></svg>Certificates</a>
+      <a data-k="cal"><svg><use href="#i-cal"/></svg>Deadlines <span class="count">2</span></a>
+      <a data-k="file"><svg><use href="#i-file"/></svg>Returns</a>
+      <a data-k="box"><svg><use href="#i-box"/></svg>Documents</a>
+    </nav>
+    <div class="org"><span class="av">SP</span><div><b>Sharma Power Cells</b><small>Assembler · Pune</small></div></div>
+  </aside>
+</template>
+<template id="top">
+  <div class="top">
+    <span class="crumb"></span>
+    <div class="top-r">
+      <div class="search"><svg><use href="#i-search"/></svg>Search certificates, filings…</div>
+      <span class="iconbtn"><svg><use href="#i-bell"/></svg><i></i></span>
+      <span class="av" style="border-radius:50%">RS</span>
+    </div>
+  </div>
+</template>
+
+<!-- ===================== 01 ONBOARDING ===================== -->
+<section class="screen" id="s1" style="grid-template-columns:1fr">
+  <div class="main">
+    <div class="top">
+      <div class="brand" style="padding:0"><span>Amp</span>liance</div>
+      <div class="row" style="gap:28px;font-size:13px">
+        <span class="row" style="gap:10px;color:var(--ink)"><span class="check"><svg><use href="#i-tick"/></svg></span>Business</span>
+        <span style="width:48px;height:1px;background:var(--line-2)"></span>
+        <span class="row" style="gap:10px;color:var(--ink)"><span class="av" style="width:22px;height:22px;border-radius:50%;font-size:10.5px;background:var(--volt);color:var(--volt-ink)">2</span>Batteries you sell</span>
+        <span style="width:48px;height:1px;background:var(--line-2)"></span>
+        <span class="row" style="gap:10px;color:var(--ink-3)"><span class="av" style="width:22px;height:22px;border-radius:50%;font-size:10.5px">3</span>Sales data</span>
+      </div>
+      <span class="note">Step 2 of 3</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 400px;gap:56px;padding:56px 120px 0">
+      <div>
+        <span class="lbl">Set up your EPR profile</span>
+        <h1 style="margin-top:14px;font-size:54px">What kind of producer <em><i>are you?</i></em></h1>
+        <p class="lead" style="max-width:560px">This decides which CPCB obligations apply to you. You can pick more than one.</p>
+
+        <div style="margin-top:36px" class="field">
+          <label>Your role</label>
+          <div class="row" style="flex-wrap:wrap;gap:10px">
+            <span class="chip on">Assembler / manufacturer</span><span class="chip on">Importer</span><span class="chip">Online seller</span><span class="chip">Brand owner</span>
+          </div>
+        </div>
+        <div style="margin-top:28px" class="field">
+          <label>Battery categories you place on the market</label>
+          <div class="row" style="flex-wrap:wrap;gap:10px">
+            <span class="chip on">Portable</span><span class="chip on">Automotive</span><span class="chip">Industrial</span><span class="chip">Electric vehicle</span>
+          </div>
+        </div>
+        <div style="margin-top:28px;display:grid;grid-template-columns:1fr 1fr;gap:18px">
+          <div class="field"><label>GSTIN</label><div class="input">27ABCDE1234F1Z5</div></div>
+          <div class="field"><label>CPCB EPR registration</label><div class="input focus">Registered · enter number<span style="margin-left:auto;color:var(--ink-3)">▾</span></div></div>
+        </div>
+        <div class="row" style="margin-top:40px;gap:12px">
+          <span class="btn p">Continue <svg><use href="#i-arrow"/></svg></span>
+          <span class="btn g">Back</span>
+        </div>
+      </div>
+      <div class="card" style="align-self:start;padding:26px;background:linear-gradient(180deg,rgba(212,255,63,.06),rgba(241,236,224,.02))">
+        <span class="lbl">Why we ask</span>
+        <p style="margin:14px 0 0;font-family:var(--serif);font-size:26px;line-height:1.15">Assemblers and importers both count as <em style="color:var(--volt)">producers</em> under the Battery Waste Management Rules.</p>
+        <p style="color:var(--ink-2);font-size:14px;line-height:1.6;margin:16px 0 0">Each battery category has its own recycling target. Ampliance tracks them separately so you never buy the wrong certificates.</p>
+        <div style="margin-top:22px;border-top:1px solid var(--line);padding-top:18px;display:grid;gap:12px;font-size:13.5px;color:var(--ink-2)">
+          <span class="row"><span class="check"><svg><use href="#i-tick"/></svg></span>Takes about 4 minutes</span>
+          <span class="row"><span class="check"><svg><use href="#i-tick"/></svg></span>No regulatory knowledge needed</span>
+          <span class="row"><span class="check"><svg><use href="#i-tick"/></svg></span>Not registered yet? We guide you</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 02 OBLIGATION CALCULATOR ===================== -->
+<section class="screen" id="s2" data-nav="calc" data-crumb="Obligations / FY 2026–27">
+  <div class="main">
+    <div class="content">
+      <div class="head">
+        <div><h1>What you <em><i>owe</i></em> this year</h1><p class="lead">Calculated from the sales you uploaded. Review it, then lock it in.</p></div>
+        <span class="btn p">Confirm obligation <svg><use href="#i-arrow"/></svg></span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 380px;gap:20px">
+        <div class="card" style="padding:0">
+          <div class="row" style="justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--line)">
+            <div class="row"><span class="iconbtn" style="width:36px;height:36px;border-radius:10px;color:var(--volt)"><svg><use href="#i-up"/></svg></span>
+              <div><b style="font-size:14px;font-weight:500">sales_FY2025-26.xlsx</b><div class="note">1,284 rows imported · 3 rows need a look</div></div></div>
+            <span class="pill ok">Parsed</span>
+          </div>
+          <table style="margin-top:14px">
+            <thead><tr><th style="padding-left:22px">Category</th><th>Chemistry</th><th class="num">Units sold</th><th class="num">Weight (kg)</th><th class="num" style="padding-right:22px">Target (kg)</th></tr></thead>
+            <tbody>
+              <tr><td style="padding-left:22px"><b>Portable</b></td><td>Li-ion</td><td class="num">18,400</td><td class="num">3,680</td><td class="num" style="padding-right:22px"><b>2,576</b></td></tr>
+              <tr><td style="padding-left:22px"><b>Portable</b></td><td>Ni-MH</td><td class="num">2,150</td><td class="num">430</td><td class="num" style="padding-right:22px"><b>301</b></td></tr>
+              <tr><td style="padding-left:22px"><b>Automotive</b></td><td>Lead-acid</td><td class="num">160</td><td class="num">2,240</td><td class="num" style="padding-right:22px"><b>1,568</b></td></tr>
+              <tr><td style="padding-left:22px"><b>Automotive</b></td><td>Li-ion</td><td class="num">48</td><td class="num">536</td><td class="num" style="padding-right:22px"><b>375</b></td></tr>
+              <tr><td style="padding-left:22px"><span class="pill warn">Review</span></td><td>Unknown</td><td class="num">3</td><td class="num">—</td><td class="num" style="padding-right:22px">—</td></tr>
+            </tbody>
+          </table>
+          <div class="row" style="justify-content:space-between;padding:16px 22px"><span class="note">3 rows have no chemistry. Fix them or exclude them.</span><span class="btn g" style="height:34px;font-size:13px">Fix 3 rows</span></div>
+        </div>
+        <div style="display:grid;gap:20px;align-content:start">
+          <div class="card" style="background:linear-gradient(160deg,rgba(212,255,63,.1),rgba(241,236,224,.02));border-color:rgba(212,255,63,.25)">
+            <span class="lbl">Total EPR target · FY 2026–27</span>
+            <div class="big" style="font-size:64px">4,820<small>kg</small></div>
+            <p class="note" style="margin:12px 0 0;line-height:1.5">That's the weight of batteries you need recycling certificates for this year.</p>
+          </div>
+          <div class="card">
+            <span class="lbl">By category</span>
+            <div style="display:grid;gap:16px;margin-top:16px;font-size:13.5px">
+              <div><div class="row" style="justify-content:space-between;margin-bottom:8px"><span>Portable</span><b style="font-weight:500">2,877 kg</b></div><div class="bar"><i style="width:60%"></i></div></div>
+              <div><div class="row" style="justify-content:space-between;margin-bottom:8px"><span>Automotive</span><b style="font-weight:500">1,943 kg</b></div><div class="bar"><i style="width:40%"></i></div></div>
+            </div>
+          </div>
+          <div class="card row" style="gap:14px;padding:16px 18px"><span class="lbl" style="color:var(--ink-2)">How is this calculated?</span><svg style="width:15px;height:15px;margin-left:auto;color:var(--ink-3)"><use href="#i-arrow"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 03 DASHBOARD ===================== -->
+<section class="screen" id="s3" data-nav="dash" data-crumb="Dashboard">
+  <div class="main">
+    <div class="content">
+      <div class="head">
+        <div><h1>Good morning, <em><i>Rohan.</i></em></h1><p class="lead">You're 62% of the way to this year's target. One thing needs you this week.</p></div>
+        <span class="btn g">FY 2026–27 ▾</span>
+      </div>
+      <div class="card row" style="gap:16px;padding:16px 20px;margin-bottom:20px;background:var(--amber-soft);border-color:rgba(242,185,92,.3)">
+        <span class="pill warn">Due in 9 days</span>
+        <span style="font-size:14px">Your Q2 sales data is due. Upload it so we can keep your target accurate.</span>
+        <span class="btn p" style="margin-left:auto;height:36px;font-size:13px">Upload sales</span>
+      </div>
+      <div style="display:grid;grid-template-columns:330px 1fr;gap:20px">
+        <div class="card" style="display:flex;flex-direction:column;align-items:center;padding:26px 22px">
+          <span class="lbl" style="align-self:flex-start">Compliance charge</span>
+          <svg viewBox="0 0 140 250" style="width:132px;margin:22px 0 16px">
+            <rect x="48" y="4" width="44" height="14" rx="4" fill="rgba(241,236,224,.06)" stroke="rgba(241,236,224,.35)"/>
+            <rect x="14" y="18" width="112" height="228" rx="20" fill="rgba(241,236,224,.02)" stroke="rgba(241,236,224,.35)" stroke-width="1.25"/>
+            <g id="dcells"></g>
+          </svg>
+          <div class="big" style="margin:0;font-size:56px">62%</div>
+          <span class="note" style="margin-top:6px">2,990 of 4,820 kg covered</span>
+        </div>
+        <div style="display:grid;gap:20px">
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+            <div class="card"><span class="lbl">Target</span><div class="big">4,820<small>kg</small></div><span class="note">Locked on 12 Apr</span></div>
+            <div class="card"><span class="lbl">Covered</span><div class="big" style="color:var(--volt)">2,990<small>kg</small></div><span class="note">7 verified certificates</span></div>
+            <div class="card"><span class="lbl">Still to buy</span><div class="big">1,830<small>kg</small></div><span class="note">Mostly automotive</span></div>
+          </div>
+          <div class="card" style="padding:20px 22px">
+            <div class="row" style="justify-content:space-between;margin-bottom:6px"><span class="lbl">Coming up</span><span class="note">View all</span></div>
+            <table>
+              <tr><td style="padding-left:0"><b>Q2 sales data upload</b></td><td>Internal checkpoint</td><td>10 Oct</td><td class="num" style="padding-right:0"><span class="pill warn">9 days</span></td></tr>
+              <tr><td style="padding-left:0"><b>Buy remaining automotive certificates</b></td><td>1,568 kg</td><td>31 Dec</td><td class="num" style="padding-right:0"><span class="pill mut">On track</span></td></tr>
+              <tr><td style="padding-left:0;border:0"><b>Annual EPR return</b></td><td style="border:0">CPCB portal</td><td style="border:0">30 Jun</td><td class="num" style="padding-right:0;border:0"><span class="pill mut">Later</span></td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 04 CERTIFICATE VERIFICATION ===================== -->
+<section class="screen" id="s4" data-nav="cert" data-crumb="Certificates / Verify">
+  <div class="main">
+    <div class="content">
+      <div class="head">
+        <div><h1>Check it <em><i>before</i></em> you pay</h1><p class="lead">Paste a certificate ID or upload the recycler's offer. We check it against the CPCB register.</p></div>
+      </div>
+      <div class="row" style="gap:12px;margin-bottom:22px">
+        <div class="input focus" style="flex:1;height:52px;border-radius:99px;padding-left:22px;font-family:var(--mono);font-size:14px">EPRC-BAT-2026-0048213</div>
+        <span class="btn p" style="height:52px;padding:0 26px">Verify certificate</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 360px;gap:20px">
+        <div class="card" style="padding:26px;border-color:rgba(212,255,63,.3);background:linear-gradient(180deg,rgba(212,255,63,.07),rgba(241,236,224,.02))">
+          <div class="row" style="justify-content:space-between">
+            <div class="row" style="gap:14px"><span class="check" style="width:44px;height:44px"><svg style="width:20px;height:20px"><use href="#i-tick"/></svg></span>
+              <div><div style="font-family:var(--serif);font-size:30px;line-height:1">Genuine certificate</div><div class="note" style="margin-top:4px">Checked just now · safe to buy</div></div></div>
+            <span class="pill ok">Verified</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin:26px 0;padding:20px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+            <div><span class="lbl">Recycler</span><div style="margin-top:8px;font-size:14.5px">GreenLoop Recyclers</div></div>
+            <div><span class="lbl">Category</span><div style="margin-top:8px;font-size:14.5px">Automotive · Lead-acid</div></div>
+            <div><span class="lbl">Quantity</span><div style="margin-top:8px;font-size:14.5px">1,200 kg</div></div>
+            <div><span class="lbl">Generated</span><div style="margin-top:8px;font-size:14.5px">18 Aug 2026</div></div>
+            <div><span class="lbl">Status</span><div style="margin-top:8px;font-size:14.5px">Available, not transferred</div></div>
+            <div><span class="lbl">Quoted price</span><div style="margin-top:8px;font-size:14.5px">Within usual range</div></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;font-size:13.5px;color:var(--ink-2)">
+            <span class="row"><span class="check"><svg><use href="#i-tick"/></svg></span>Recycler registered with CPCB</span>
+            <span class="row"><span class="check"><svg><use href="#i-tick"/></svg></span>Certificate exists on the portal</span>
+            <span class="row"><span class="check"><svg><use href="#i-tick"/></svg></span>Category matches your obligation</span>
+            <span class="row"><span class="check"><svg><use href="#i-tick"/></svg></span>Not already sold to someone else</span>
+          </div>
+          <div class="row" style="margin-top:26px;gap:12px"><span class="btn p">Add to my certificates</span><span class="btn g">Download check report</span></div>
+        </div>
+        <div class="card" style="padding:20px 22px;align-self:start">
+          <span class="lbl">Recent checks</span>
+          <div style="display:grid;margin-top:8px">
+            <div class="row" style="padding:14px 0;border-bottom:1px solid var(--line)"><span class="check"><svg><use href="#i-tick"/></svg></span><div style="flex:1"><div style="font-family:var(--mono);font-size:12.5px">…0048213</div><div class="note">GreenLoop · 1,200 kg</div></div><span class="pill ok">OK</span></div>
+            <div class="row" style="padding:14px 0;border-bottom:1px solid var(--line)"><span class="check x"><svg><use href="#i-x"/></svg></span><div style="flex:1"><div style="font-family:var(--mono);font-size:12.5px">…0031907</div><div class="note">Recycler not on register</div></div><span class="pill bad">Fake</span></div>
+            <div class="row" style="padding:14px 0;border-bottom:1px solid var(--line)"><span class="check" style="background:var(--amber)"><svg><use href="#i-x"/></svg></span><div style="flex:1"><div style="font-family:var(--mono);font-size:12.5px">…0045550</div><div class="note">Wrong category (portable)</div></div><span class="pill warn">Mismatch</span></div>
+            <div class="row" style="padding:14px 0"><span class="check"><svg><use href="#i-tick"/></svg></span><div style="flex:1"><div style="font-family:var(--mono);font-size:12.5px">…0029114</div><div class="note">EcoCell · 800 kg</div></div><span class="pill ok">OK</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 05 DEADLINES ===================== -->
+<section class="screen" id="s5" data-nav="cal" data-crumb="Deadlines">
+  <div class="main">
+    <div class="content">
+      <div class="head">
+        <div><h1>Never miss a <em><i>deadline</i></em></h1><p class="lead">Every CPCB date that applies to you, with reminders where you'll actually see them.</p></div>
+        <span class="btn g">Add to Google Calendar</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 360px;gap:20px">
+        <div class="card" style="padding:8px 26px">
+          <div style="display:grid">
+            <div class="row" style="gap:22px;padding:20px 0;border-bottom:1px solid var(--line)">
+              <div style="width:64px;text-align:center"><div class="lbl" style="color:var(--amber)">Oct</div><div style="font-family:var(--serif);font-size:38px;line-height:1">10</div></div>
+              <div style="flex:1"><b style="font-weight:500;font-size:15px">Upload Q2 sales data</b><div class="note" style="margin-top:4px">Keeps your target accurate · takes 2 minutes</div></div>
+              <span class="pill warn">In 9 days</span><span class="btn p" style="height:36px;font-size:13px">Upload</span>
+            </div>
+            <div class="row" style="gap:22px;padding:20px 0;border-bottom:1px solid var(--line)">
+              <div style="width:64px;text-align:center"><div class="lbl">Nov</div><div style="font-family:var(--serif);font-size:38px;line-height:1">15</div></div>
+              <div style="flex:1"><b style="font-weight:500;font-size:15px">Review certificate gap</b><div class="note" style="margin-top:4px">1,830 kg left to cover · we'll suggest verified recyclers</div></div>
+              <span class="pill mut">In 45 days</span>
+            </div>
+            <div class="row" style="gap:22px;padding:20px 0;border-bottom:1px solid var(--line)">
+              <div style="width:64px;text-align:center"><div class="lbl">Dec</div><div style="font-family:var(--serif);font-size:38px;line-height:1">31</div></div>
+              <div style="flex:1"><b style="font-weight:500;font-size:15px">Buy remaining automotive certificates</b><div class="note" style="margin-top:4px">Prices usually rise near year end</div></div>
+              <span class="pill mut">In 91 days</span>
+            </div>
+            <div class="row" style="gap:22px;padding:20px 0">
+              <div style="width:64px;text-align:center"><div class="lbl">Jun</div><div style="font-family:var(--serif);font-size:38px;line-height:1">30</div></div>
+              <div style="flex:1"><b style="font-weight:500;font-size:15px">File annual EPR return</b><div class="note" style="margin-top:4px">On the CPCB portal · we prepare the summary for you</div></div>
+              <span class="pill mut">In 272 days</span>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="align-self:start;padding:24px">
+          <span class="lbl">Reminders</span>
+          <div style="display:grid;gap:18px;margin-top:20px;font-size:14px">
+            <div class="row"><span class="iconbtn" style="width:34px;height:34px;border-radius:10px"><svg><use href="#i-wa"/></svg></span><div style="flex:1">WhatsApp<div class="note">+91 98••• ••210</div></div><span class="toggle on"></span></div>
+            <div class="row"><span class="iconbtn" style="width:34px;height:34px;border-radius:10px"><svg><use href="#i-mail"/></svg></span><div style="flex:1">Email<div class="note">rohan@sharmapower.in</div></div><span class="toggle on"></span></div>
+          </div>
+          <div style="border-top:1px solid var(--line);margin-top:22px;padding-top:20px">
+            <span class="lbl">Remind me</span>
+            <div class="row" style="gap:8px;margin-top:14px;flex-wrap:wrap"><span class="chip on" style="height:34px">30 days before</span><span class="chip on" style="height:34px">7 days</span><span class="chip on" style="height:34px">1 day</span><span class="chip" style="height:34px">Same day</span></div>
+          </div>
+          <div class="card" style="margin-top:22px;padding:16px;background:var(--panel-2)">
+            <div class="note" style="color:var(--ink-2);line-height:1.5">Also send reminders to your accountant? <span style="color:var(--volt)">Add a teammate</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 06 RETURN ===================== -->
+<section class="screen" id="s6" data-nav="file" data-crumb="Returns / FY 2026–27">
+  <div class="main">
+    <div class="content">
+      <div class="head">
+        <div><h1>Your return is <em><i>ready.</i></em></h1><p class="lead">Everything is pre-filled from your sales and certificates. Copy it into the CPCB portal and you're done.</p></div>
+        <div class="row" style="gap:12px"><span class="btn g"><svg><use href="#i-dl"/></svg>Download PDF</span><span class="btn p">Mark as filed</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 340px;gap:20px">
+        <div class="card" style="padding:0">
+          <div class="row" style="justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--line)">
+            <div><span class="lbl">Annual EPR return · summary</span><div style="font-size:15px;margin-top:6px">Sharma Power Cells · Producer</div></div>
+            <span class="pill ok">Target met · 100%</span>
+          </div>
+          <table>
+            <thead><tr><th style="padding:16px 24px 12px">Category</th><th class="num" style="padding-top:16px">Placed on market (kg)</th><th class="num" style="padding-top:16px">Target (kg)</th><th class="num" style="padding-top:16px">Certificates (kg)</th><th class="num" style="padding:16px 24px 12px">Status</th></tr></thead>
+            <tr><td style="padding-left:24px"><b>Portable</b></td><td class="num">4,110</td><td class="num">2,877</td><td class="num">2,900</td><td class="num" style="padding-right:24px"><span class="pill ok">Met</span></td></tr>
+            <tr><td style="padding-left:24px"><b>Automotive</b></td><td class="num">2,776</td><td class="num">1,943</td><td class="num">1,950</td><td class="num" style="padding-right:24px"><span class="pill ok">Met</span></td></tr>
+            <tr><td style="padding-left:24px;border:0"><b>Total</b></td><td class="num" style="border:0"><b>6,886</b></td><td class="num" style="border:0"><b>4,820</b></td><td class="num" style="border:0"><b>4,850</b></td><td style="border:0"></td></tr>
+          </table>
+          <div style="margin:4px 24px 24px;padding:18px 20px;border-radius:14px;background:var(--panel-2);display:grid;grid-template-columns:repeat(3,1fr);gap:18px">
+            <div><span class="lbl">Certificates attached</span><div style="margin-top:6px;font-size:15px">11 verified</div></div>
+            <div><span class="lbl">Surplus carried forward</span><div style="margin-top:6px;font-size:15px">30 kg</div></div>
+            <div><span class="lbl">Due on CPCB portal</span><div style="margin-top:6px;font-size:15px">30 Jun 2027</div></div>
+          </div>
+        </div>
+        <div class="card" style="align-self:start;padding:24px">
+          <span class="lbl">Before you file</span>
+          <div style="display:grid;gap:16px;margin-top:18px;font-size:13.5px;color:var(--ink-2)">
+            <span class="row"><span class="check"><svg><use href="#i-tick"/></svg></span>Sales data for all 4 quarters</span>
+            <span class="row"><span class="check"><svg><use href="#i-tick"/></svg></span>All certificates verified</span>
+            <span class="row"><span class="check"><svg><use href="#i-tick"/></svg></span>Targets met in every category</span>
+            <span class="row"><span class="check"><svg><use href="#i-tick"/></svg></span>GSTIN and registration match</span>
+          </div>
+          <div style="border-top:1px solid var(--line);margin-top:22px;padding-top:20px">
+            <span class="lbl">Step by step</span>
+            <ol style="margin:14px 0 0;padding-left:18px;color:var(--ink-2);font-size:13.5px;line-height:1.9">
+              <li>Log in to the CPCB EPR portal</li><li>Open <i>Annual return</i></li><li>Copy each figure from this summary</li><li>Upload the PDF as supporting proof</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+document.querySelectorAll('.screen[data-nav]').forEach(s=>{
+  const side=document.getElementById('side').content.cloneNode(true);
+  side.querySelector('[data-k="'+s.dataset.nav+'"]').classList.add('on');
+  s.prepend(side);
+  const top=document.getElementById('top').content.cloneNode(true);
+  top.querySelector('.crumb').textContent=s.dataset.crumb;
+  s.querySelector('.main').prepend(top);
+});
+// dashboard battery: 12 cells, 62% lit
+const g=document.getElementById('dcells'),N=12,lit=Math.round(.62*N),y0=30,bot=234,gap=4,h=(bot-y0-gap*(N-1))/N;
+for(let i=0;i<N;i++){const r=document.createElementNS('http://www.w3.org/2000/svg','rect');
+  r.setAttribute('x',24);r.setAttribute('width',92);r.setAttribute('height',h);r.setAttribute('y',bot-(i+1)*h-i*gap);r.setAttribute('rx',4);
+  r.setAttribute('fill',i<lit?'#D4FF3F':'rgba(241,236,224,.04)');r.setAttribute('stroke',i<lit?'#D4FF3F':'rgba(241,236,224,.08)');
+  if(i<lit)r.setAttribute('style','filter:drop-shadow(0 0 6px rgba(212,255,63,.45))');g.appendChild(r);}
+</script>
+</body>
+</html>
